@@ -1,72 +1,77 @@
 
-create database [med]
-go
 
-USE [med]
-go
+-- Вставка даних в таблицю Departments
+INSERT INTO Departments (Building, Financing, Name)
+VALUES
+	(5, 30000, 'Eye Examination'),
+    (1, 10000, 'Ophthalmology'),
+    (2, 15000, 'Physiotherapy'),
+    (3, 25000, 'Cardiology'),
+    (4, 18000, 'Neurology'),
+    (5, 30000, 'Oncology');
 
+-- Вставка даних в таблицю Diseases
+INSERT INTO Diseases (Name)
+VALUES
+    ('Flu'),
+    ('Asthma'),
+    ('Diabetes'),
+    ('Hypertension'),
+    ('Cancer'),
+    ('Arthritis'),
+    ('Migraine');
 
---1 Відділення (Departments)
-CREATE TABLE Departments (
-    Id INT PRIMARY KEY IDENTITY,
-    Building INT NOT NULL CHECK (Building BETWEEN 1 AND 5),
-    Financing MONEY NOT NULL DEFAULT 0 CHECK (Financing >= 0),
-    Name NVARCHAR(100) NOT NULL UNIQUE
-);
+-- Вставка даних в таблицю Doctors
+INSERT INTO Doctors (Name, Salary, Surname)
+VALUES
+    ('John', 5000, 'Smith'),
+    ('Emily', 5500, 'Johnson'),
+    ('Michael', 6000, 'Williams'),
+    ('Jessica', 5200, 'Brown'),
+    ('Daniel', 5800, 'Jones'),
+	('Daniel', 5800, 'Smith');
 
---2 Захворювання (Diseases)
-CREATE TABLE Diseases (
-    Id INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(100) NOT NULL UNIQUE
-);
+-- Вставка даних в таблицю Examinations
+INSERT INTO Examinations (Name)
+VALUES
+	('GRVI'),
+    ('MRI'),
+    ('X-Ray'),
+    ('Blood Test'),
+    ('Ultrasound'),
+    ('Endoscopy');
 
---3 Лікарі (Doctors)
-CREATE TABLE Doctors (
-    Id INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(MAX) NOT NULL,
-    Salary MONEY NOT NULL CHECK (Salary > 0),
-    Surname NVARCHAR(MAX) NOT NULL
-);
+-- Вставка даних в таблицю Inters
+INSERT INTO Inters (DoctorId)
+VALUES
+    (1),
+    (2),
+    (3);
 
---4 Обстеження (Examinations)
-CREATE TABLE Examinations (
-    Id INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(100) NOT NULL UNIQUE
-);
+-- Вставка даних в таблицю Professors
+INSERT INTO Professors (DoctorId)
+VALUES
+    (4),
+    (5);
 
---5 Інтерни (Inters)
-CREATE TABLE Inters (
-    Id INT PRIMARY KEY IDENTITY,
-    DoctorId INT NOT NULL,
-    FOREIGN KEY (DoctorId) REFERENCES Doctors(Id)
-);
+-- Вставка даних в таблицю Wards
+INSERT INTO Wards (Name, Places, DepartmentId)
+VALUES
+	('Ward9', 20, 5),
+    ('Ward8', 15, 2),
+    ('Ward7', 25, 3),
+    ('Ward6', 18, 4),
+    ('Ward1', 20, 1),
+    ('Ward2', 15, 2),
+    ('Ward3', 25, 3),
+    ('Ward4', 18, 4),
+    ('Ward5', 30, 5);
 
---6 Професори (Professors)
-CREATE TABLE Professors (
-    Id INT PRIMARY KEY IDENTITY,
-    DoctorId INT NOT NULL,
-    FOREIGN KEY (DoctorId) REFERENCES Doctors(Id)
-);
-
---7 Палати (Wards)
-CREATE TABLE Wards (
-    Id INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(20) NOT NULL UNIQUE,
-    Places INT NOT NULL CHECK (Places >= 1),
-    DepartmentId INT NOT NULL,
-    FOREIGN KEY (DepartmentId) REFERENCES Departments(Id)
-);
-
---8 Лікарі та обстеження (DoctorsExaminations)
-CREATE TABLE DoctorsExaminations (
-    Id INT PRIMARY KEY IDENTITY,
-    Date DATE NOT NULL DEFAULT GETDATE(),
-    DiseaseId INT NOT NULL,
-    DoctorId INT NOT NULL,
-    ExaminationId INT NOT NULL,
-    WardId INT NOT NULL,
-    FOREIGN KEY (DiseaseId) REFERENCES Diseases(Id),
-    FOREIGN KEY (DoctorId) REFERENCES Doctors(Id),
-    FOREIGN KEY (ExaminationId) REFERENCES Examinations(Id),
-    FOREIGN KEY (WardId) REFERENCES Wards(Id)
-);
+-- Вставка даних в таблицю DoctorsExaminations
+INSERT INTO DoctorsExaminations (DiseaseId, DoctorId, ExaminationId, WardId)
+VALUES
+    (1, 1, 3, 1),
+    (2, 2, 1, 2),
+    (3, 3, 2, 3),
+    (4, 4, 4, 4),
+    (5, 5, 5, 5);
